@@ -6,7 +6,7 @@ import com.typesafe.config.Config
 import java.net.URI
 import collection.JavaConverters._
 
-/** Sample usage in Play framework:
+/** Sample usage:
   *
   * 1. Add to application.conf
   * {{{
@@ -22,7 +22,10 @@ import collection.JavaConverters._
   *   ]
   * }}}
   *
-  * 2. Get CouchbaseClient from an ActorSystem
+  * 2. Get CouchbaseClient from an ActorSystem.
+  *
+  * This example use Play framework 2 - in which, we can get ActorSystem by importing.
+  * Of course, you can get CouchbaseClient without Play.
   * {{{
   *   import play.api.libs.concurrent.Akka
   *   import play.api.Play.current
@@ -33,6 +36,8 @@ import collection.JavaConverters._
   * 3. Use CouchbaseClient.
   * If use asynchronous methods then we can use CbFutureAsScala
   * to implicit convert spymemcache ListenableFuture to scala Future
+  *
+  * This code use play-json - a json parser library that do NOT depends on play framework
   * {{{
   *   import akka.contrib.couchbase.CbFutureAsScala._
   *   import play.api.libs.json.Json

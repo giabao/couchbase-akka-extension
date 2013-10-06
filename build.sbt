@@ -1,4 +1,4 @@
-organization := "sandinh"
+organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
@@ -14,3 +14,40 @@ libraryDependencies ++= Seq(
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.1",
     "com.couchbase.client"      %  "couchbase-client"   % "1.2.0"
 )
+
+publishTo := {
+  val nexus = "https://oss.sonatype.org/"
+  if (version.value.trim.endsWith("SNAPSHOT"))
+    Some("snapshots" at nexus + "content/repositories/snapshots")
+  else
+    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
+
+publishMavenStyle := true
+
+publishArtifact in Test := false
+
+pomIncludeRepository := { _ => false }
+
+pomExtra := (
+  <url>https://github.com/giabao/couchbase-akka-extension</url>
+  <licenses>
+    <license>
+      <name>Apache 2</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+  <scm>
+    <url>git@github.com:giabao/couchbase-akka-extension.git</url>
+    <connection>scm:git:git@github.com:giabao/couchbase-akka-extension.git</connection>
+  </scm>
+  <developers>
+    <developer>
+      <id>giabao</id>
+      <name>Gia Bảo</name>
+      <email>giabao@sandinh.net</email>
+      <organization>Sân Đình</organization>
+      <organizationUrl>http://sandinh.com</organizationUrl>
+    </developer>
+  </developers>)
