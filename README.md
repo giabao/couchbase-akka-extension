@@ -5,16 +5,19 @@ This is an [akka extension](http://doc.akka.io/docs/akka/2.2.1/scala/extending-a
 ### Sample usage
 1. Add to application.conf
 ```
-  akka.contrib.couchbase.buckets = [
-    { bucket=bk1
-      password="some password"
-      nodes="http://cb1.sandinh.com:8091/pools;http://cb2.sandinh.com:8091/pools"
-    },
-    { bucket=bk2
-      password="some password"
-      nodes="http://cb3.sandinh.com:8091/pools"
-    }
-  ]
+  akka{
+    extensions = ["akka.contrib.couchbase.CBExtension"]
+    contrib.couchbase.buckets = [
+      { bucket=bk1
+        password="some password"
+        nodes="http://cb1.sandinh.com:8091/pools;http://cb2.sandinh.com:8091/pools"
+      },
+      { bucket=bk2
+        password="some password"
+        nodes="http://cb3.sandinh.com:8091/pools"
+      }
+    ]
+  }
 ```
 2. Get CouchbaseClient from an ActorSystem.
 This example use Play framework 2 - in which, we can get ActorSystem by importing.
@@ -32,21 +35,40 @@ This code use play-json - a json parser library that do NOT depends on play fram
 ```scala
   import akka.contrib.couchbase.CbFutureAsScala._
   import play.api.libs.json.Json
-  
+  import scala.concurrent.ExecutionContext.Implicits.global
+
   case class User(name: String, age: Int)
   
   implicit val fmt = Json.format[User]
   
   def getOrCreate(key: String): Future[User] =
-    cb.asyncGet(key).map{
+    cb.asyncGet(key).asScala.map{
       case s: String => Json.fromJson[User](Json.parse(s)).get
     }.recoverWith{
       //FIXME hard-code "Not found"
       case CBException("Not found") =>
         val u = User("Bob", 18)
-        cb.set(key, Json.stringify(Json.toJson(u))).map(_ => u)
+        cb.set(key, Json.stringify(Json.toJson(u))).asScala.map(_ => u)
     }
 ```
+
+### Changelogs
+##### v2.0.0
++ Add unit test
++ (NOT compatible) change from:
+```scala
+ implicit def xxCbFutureAsScala[T](underlying: XxCbFuture[T]): Future[T]
+```
+to:
+```scala
+  implicit class RichXxCbFuture(underlying: XxCbFuture[T]){
+    def asScala: Future[T]
+  }
+```
+So, in v2.0.0, you must call .asScala to convert CbFuture to scala Future (similar to collection.JavaConverters._ )
+
+##### v1.0.0
+First stable release
 
 ### Licence
 This software is licensed under the Apache 2 license:
