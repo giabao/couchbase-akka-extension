@@ -15,6 +15,7 @@ object CbFutureAsScala{
     def apply(msg: String) = new CBException(msg)
     def unapply(e: CBException) = if(e eq null) None else Some(e.getMessage)
   }
+  val NotFound = "Not found"
 
   implicit class RichOperationFuture[T](underlying: OperationFuture[T]){
     def asScala: Future[T] = {

@@ -45,14 +45,17 @@ This code use play-json - a json parser library that do NOT depends on play fram
     cb.asyncGet(key).asScala.map{
       case s: String => Json.fromJson[User](Json.parse(s)).get
     }.recoverWith{
-      //FIXME hard-code "Not found"
-      case CBException("Not found") =>
+      case CBException(NotFound) =>
         val u = User("Bob", 18)
         cb.set(key, Json.stringify(Json.toJson(u))).asScala.map(_ => u)
     }
 ```
 
 ### Changelogs
+##### v2.0.1
++ add val akka.contrib.couchbase.CbFutureAsScala.NotFound
++ binary compatible with v2.0.x. We use [Semantic Versioning](http://semver.org)
+
 ##### v2.0.0
 + Add unit test
 + (NOT compatible) change from:
