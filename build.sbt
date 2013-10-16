@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "2.0.1"
+version := "2.0.2"
 
 scalaVersion := "2.10.3"
 
@@ -13,7 +13,7 @@ javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "
 libraryDependencies ++= Seq(
     "org.specs2"                %% "specs2"             % "2.2.3"   % "test",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.1",
-    "com.couchbase.client"      %  "couchbase-client"   % "1.2.0"
+    "com.couchbase.client"      %  "couchbase-client"   % "1.2.1"
 )
 
 publishTo := {
