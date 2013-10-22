@@ -1,3 +1,8 @@
+/**
+ * @author giabao
+ * created: 2013-10-07 17:45
+ * (c) 2011-2013 sandinh.com
+ */
 package akka.contrib.couchbase
 
 import org.specs2.mutable.Specification
@@ -7,11 +12,6 @@ import CbFutureAsScala._
 import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
 
-/**
- * @author giabao
- * created: 2013-10-07 17:45
- * Copyright(c) 2011-2013 sandinh.com
- */
 class CouchbaseAkkaSpec extends Specification{sequential
   var system: ActorSystem = _
   var cb: CouchbaseClient = _

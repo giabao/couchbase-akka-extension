@@ -52,9 +52,22 @@ This code use play-json - a json parser library that do NOT depends on play fram
 ```
 
 ### Changelogs
+We use [Semantic Versioning](http://semver.org), so changing in micro version is binary compatible.
+
+Ex, v2.0.x is binary compatible with v2.0.0
+
+##### v2.0.3
++ update akka-actor 2.2.2
++ add [CBJson util traits](https://github.com/giabao/couchbase-akka-extension/blob/master/src/main/scala/akka/contrib/couchbase/CBJson.scala) for reads/ writes couchbase.
+  See sample usage in [CBJsonSpec.scala](https://github.com/giabao/couchbase-akka-extension/blob/master/src/test/scala/akka/contrib/couchbase/CBJsonSpec.scala)
++ add optional dependency `"com.typesafe.play"         %% "play-json"          % "2.2.0"   % "optional"`.
+  This is mandatory if you use CBJson.
+
+##### v2.0.2
++ update couchbase-client 1.2.1 (& spymemcached 2.10.1)
+
 ##### v2.0.1
 + add val akka.contrib.couchbase.CbFutureAsScala.NotFound
-+ binary compatible with v2.0.x. We use [Semantic Versioning](http://semver.org)
 
 ##### v2.0.0
 + Add unit test

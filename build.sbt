@@ -12,6 +12,7 @@ javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "
 
 libraryDependencies ++= Seq(
     "org.specs2"                %% "specs2"             % "2.2.3"   % "test",
+    "com.typesafe.play"         %% "play-json"          % "2.2.0"   % "optional",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.2",
     "com.couchbase.client"      %  "couchbase-client"   % "1.2.1"
 )
