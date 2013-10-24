@@ -56,6 +56,9 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v2.0.4
++ only update akka-actor 2.2.3
+
 ##### v2.0.3
 + update akka-actor 2.2.2
 + add [CBJson util traits](https://github.com/giabao/couchbase-akka-extension/blob/master/src/main/scala/akka/contrib/couchbase/CBJson.scala) for reads/ writes couchbase.
