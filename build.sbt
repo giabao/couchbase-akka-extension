@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "2.0.5"
+version := "2.0.6"
 
 scalaVersion := "2.10.3"
 
@@ -18,10 +18,10 @@ javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "
 resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(
-    "org.specs2"                %% "specs2"             % "2.3.3"   % "test",
+    "org.specs2"                %% "specs2"             % "2.3.4"   % "test",
     "com.typesafe.play"         %% "play-json"          % "2.2.1"   % "optional",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.3",
-    "com.couchbase.client"      %  "couchbase-client"   % "1.2.2"
+    "com.couchbase.client"      %  "couchbase-client"   % "1.2.3"
 )
 
 publishTo := {
@@ -38,8 +38,7 @@ publishArtifact in Test := false
 
 pomIncludeRepository := { _ => false }
 
-pomExtra := (
-  <url>https://github.com/giabao/couchbase-akka-extension</url>
+pomExtra := <url>https://github.com/giabao/couchbase-akka-extension</url>
   <licenses>
     <license>
       <name>Apache 2</name>
@@ -59,4 +58,4 @@ pomExtra := (
       <organization>Sân Đình</organization>
       <organizationUrl>http://sandinh.com</organizationUrl>
     </developer>
-  </developers>)
+  </developers>
