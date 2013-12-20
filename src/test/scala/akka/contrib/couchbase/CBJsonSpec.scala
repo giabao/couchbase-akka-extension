@@ -65,7 +65,7 @@ class CBJsonSpec extends Specification{sequential
       Trophy.get(1, CuNhan) must throwA(CBException(NotFound)).await
     }
 
-    "shurtdown ActorSystem" in {
+    "shutdown ActorSystem" in {
       system.shutdown()
       system.awaitTermination()
 

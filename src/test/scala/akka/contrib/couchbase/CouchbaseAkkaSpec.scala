@@ -46,7 +46,7 @@ class CouchbaseAkkaSpec extends Specification{sequential
       cb.asyncGetBulk(keys.asJava).asScala must havePair(k2 -> v2.asInstanceOf[AnyRef]).await
     }
 
-    """throw CBException(NotFound)""" in {
+    "throw CBException(NotFound)" in {
       val k = "test_key_not_exist"
       cb.asyncGet(k).asScala must throwA(CBException(NotFound)).await
       cb.asyncGet(k).asScala.recover{

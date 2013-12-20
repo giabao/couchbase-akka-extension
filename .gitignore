@@ -3,3 +3,5 @@ project/target/
 target/
 .idea/
 .idea_modules/
+couchbase-akka-extension.iml
+project/couchbase-akka-extension-build.iml

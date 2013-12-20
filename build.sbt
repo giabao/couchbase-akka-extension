@@ -18,7 +18,7 @@ javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "
 resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(
-    "org.specs2"                %% "specs2"             % "2.3.4"   % "test",
+    "org.specs2"                %% "specs2"             % "2.3.6"   % "test",
     "com.typesafe.play"         %% "play-json"          % "2.2.1"   % "optional",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.3",
     "com.couchbase.client"      %  "couchbase-client"   % "1.2.3"
