@@ -15,7 +15,13 @@ class CBExtension(system: ExtendedActorSystem) extends Extension{
   private def bucketEntry(cfg: Config) = {
     val bucket = cfg.getString("bucket")
     val password = cfg.getString("password")
-    val baseList = cfg.getString("nodes").split(';').toList.map(URI.create).asJava
+    //We need call toBuffer, not toList because if call toList =>
+    //baseList will be scala.collection.convert.Wrappers.SeqWrapper =>
+    //  java.lang.UnsupportedOperationException
+    //  at java.util.AbstractList.set(AbstractList.java:132)
+    //when init CouchbaseConnectionFactory
+    //@see https://github.com/giabao/couchbase-akka-extension/issues/1
+    val baseList = cfg.getString("nodes").split(';').toBuffer.map(URI.create).asJava
     val cf = new CouchbaseConnectionFactory(baseList, bucket, password)
     val cb = new CouchbaseClient(cf)
     (bucket, cb)
