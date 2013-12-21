@@ -56,6 +56,9 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v2.0.8
++ fix [IllegalStateException: Promise already completed. in RichBulkFuture](https://github.com/giabao/couchbase-akka-extension/issues/2)
+
 ##### v2.0.7
 + fix [UnsupportedOperationException](https://github.com/giabao/couchbase-akka-extension/issues/1)
 

@@ -71,15 +71,17 @@ object CbFutureAsScala{
   implicit class RichBulkFuture[T](underlying: BulkFuture[java.util.Map[String, T]]){
     def asScala: Future[Map[String, T]] = {
       val p = Promise[Map[String, T]]()
-      underlying.addListener(new BulkGetCompletionListener{
+      lazy val listener: BulkGetCompletionListener = new BulkGetCompletionListener{
         def onComplete(f: BulkGetFuture[_]) {
+          underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if(status.isSuccess)
             p success underlying.get.asScala.toMap //java.util.Map -> mutable.Map -> immutable.Map
           else
             p failure CBException(status.getMessage)
         }
-      })
+      }
+      underlying.addListener(listener)
       p.future
     }
   }
