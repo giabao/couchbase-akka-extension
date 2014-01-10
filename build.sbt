@@ -15,6 +15,8 @@ scalacOptions ++= Seq(
 
 javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "-Xlint:unchecked", "-Xlint:deprecation")
 
+resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
+
 libraryDependencies ++= Seq(
     "org.specs2"                %% "specs2"             % "2.3.7"   % "test",
     "com.typesafe.play"         %% "play-json"          % "2.2.1"   % "optional",
