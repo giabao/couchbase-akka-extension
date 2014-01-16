@@ -16,6 +16,10 @@ import CbFutureAsScala._
 object CBJsonSpec {
   lazy val system = ActorSystem()
 
+  trait WithMyCB extends WithCB{
+    protected def cb = CBExtension(system).buckets.head._2
+  }
+
   sealed trait TrophyType{
     def id: Int
     def name: String
@@ -40,10 +44,19 @@ object CBJsonSpec {
 
   case class Trophy(awardCount: Int)
 
-  object Trophy extends CBJson[Trophy] with Key2[Trophy, Int, TrophyType] {
-    protected def cb = CBExtension(system).buckets.head._2
+  object Trophy extends CBJson[Trophy] with Key2[Trophy, Int, TrophyType] with WithMyCB{
     protected def key(uid: Int, t: TrophyType) = "u" + t.id + uid
     protected implicit val fmt = Json.format[Trophy]
+  }
+
+  //as of version 2.0.9, the following code will not compilable, with the following compile error:
+  //overriding method set in trait WritesKey1 of type (a: String, value: Int)scala.concurrent.Future[Boolean];
+  //[error]  method set in trait CBWrites of type (key: String, value: Int)scala.concurrent.Future[Boolean] cannot override final member
+  //[error]   object WritesIntWithStringKey extends WritesKey1[Int, String] with CBWrites[Int] with WithMyCB{
+  object WritesIntWithStringKey extends WritesKey1[Int, String] with CBWrites[Int] with WithMyCB{
+    override protected def Expiry = 60
+    protected def key(a: String) = s"test$a"
+    protected def writes(v: Int) = v.toString
   }
 }
 
@@ -63,6 +76,33 @@ class CBJsonSpec extends Specification{sequential
       Trophy.delete(1, CuNhan).map(_.booleanValue) must beTrue.await
 
       Trophy.get(1, CuNhan) must throwA(CBException(NotFound)).await
+    }
+
+    /* The following code will throw StackOverflowError at line C.set("x")
+trait A{
+  def set(k: String){ println("set: " + k) }
+}
+trait B[X] extends A{
+  def key(x: X): String
+  def set(x: X): Unit = set(key(x))
+}
+object C extends B[String] with A{
+  def key(x: String) = x
+}
+C.set("x")
+
+      But if we define B.set as:
+def set(x: X) = super.set(key(x))
+      Then every thing is OK.
+
+      And, if we declare
+trait B[X] { this: A =>
+      As we declare in version 2.0.9:
+ReadsKey1[T, A] { this: CBReads[T] =>
+      Then object C will not compilable. @see WritesIntWithStringKey
+     */
+    "not throws StackOverflowError" in {
+      WritesIntWithStringKey.set("a", 1) must not (throwA[Exception])
     }
 
     "shutdown ActorSystem" in {

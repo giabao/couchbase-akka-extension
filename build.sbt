@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "2.0.9"
+version := "2.1.0"
 
 scalaVersion := "2.10.3"
 
@@ -24,9 +24,9 @@ libraryDependencies ++= Seq(
     "com.couchbase.client"      %  "couchbase-client"   % "1.3.0"
 )
 
-publishTo := {
+publishTo <<= version { v =>
   val nexus = "https://oss.sonatype.org/"
-  if (version.value.trim.endsWith("SNAPSHOT"))
+  if (v.trim.endsWith("SNAPSHOT"))
     Some("snapshots" at nexus + "content/repositories/snapshots")
   else
     Some("releases"  at nexus + "service/local/staging/deploy/maven2")

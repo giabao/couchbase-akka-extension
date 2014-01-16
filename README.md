@@ -51,10 +51,20 @@ This code use play-json - a json parser library that do NOT depends on play fram
     }
 ```
 
+### Install
+This library is published to maven central.
+
+If you use sbt then:
+```libraryDependencies += "com.sandinh" %% "couchbase-akka-extension" % "2.1.0"```
+
 ### Changelogs
 We use [Semantic Versioning](http://semver.org), so changing in micro version is binary compatible.
 
 Ex, v2.0.x is binary compatible with v2.0.0
+
+##### v2.1.0
++ Add scala doc for CBJson.scala
++ Change ```ReadsKey1[T, A] { this: CBReads[T] =>``` to ```ReadsKey1[T, A] extends CBReads[T] {```. This change can break binary compatibility, but keep source compatibility. @See case "not throws StackOverflowError" in [CBJsonSpec](https://github.com/giabao/couchbase-akka-extension/blob/master/src/test/scala/akka/contrib/couchbase/CBJsonSpec.scala) for more information.
 
 ##### v2.0.8
 + fix [IllegalStateException: Promise already completed. in RichBulkFuture](https://github.com/giabao/couchbase-akka-extension/issues/2)
@@ -68,7 +78,7 @@ Ex, v2.0.x is binary compatible with v2.0.0
 ##### v2.0.3
 + update akka-actor 2.2.2
 + add [CBJson util traits](https://github.com/giabao/couchbase-akka-extension/blob/master/src/main/scala/akka/contrib/couchbase/CBJson.scala) for reads/ writes couchbase.
-  See sample usage in [CBJsonSpec.scala](https://github.com/giabao/couchbase-akka-extension/blob/master/src/test/scala/akka/contrib/couchbase/CBJsonSpec.scala)
+  See sample usage in [CBJsonSpec](https://github.com/giabao/couchbase-akka-extension/blob/master/src/test/scala/akka/contrib/couchbase/CBJsonSpec.scala)
 + add optional dependency `"com.typesafe.play"         %% "play-json"          % "2.2.0"   % "optional"`.
   This is mandatory if you use CBJson.
 
