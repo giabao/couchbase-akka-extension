@@ -52,7 +52,7 @@ This code use play-json - a json parser library that do NOT depends on play fram
 ```
 
 ### Install
-This library is published to maven central.
+This library is published to [maven central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.sandinh%22%20AND%20a%3A%22couchbase-akka-extension_2.10%22).
 
 If you use sbt then:
 ```libraryDependencies += "com.sandinh" %% "couchbase-akka-extension" % "2.1.0"```
