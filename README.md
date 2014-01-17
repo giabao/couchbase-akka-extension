@@ -64,6 +64,7 @@ Ex, v2.0.x is binary compatible with v2.0.0
 
 ##### v2.1.0
 + Add scala doc for CBJson.scala
++ Remove handler when future completed in [CbFutureAsScala](https://github.com/giabao/couchbase-akka-extension/blob/master/src/main/scala/akka/contrib/couchbase/CbFutureAsScala.scala)
 + Change ```ReadsKey1[T, A] { this: CBReads[T] =>``` to ```ReadsKey1[T, A] extends CBReads[T] {```. This change can break binary compatibility, but keep source compatibility. @See case "not throws StackOverflowError" in [CBJsonSpec](https://github.com/giabao/couchbase-akka-extension/blob/master/src/test/scala/akka/contrib/couchbase/CBJsonSpec.scala) for more information.
 
 ##### v2.0.8
