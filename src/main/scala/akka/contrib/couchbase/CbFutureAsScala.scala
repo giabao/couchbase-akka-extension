@@ -20,15 +20,17 @@ object CbFutureAsScala{
   implicit class RichOperationFuture[T](underlying: OperationFuture[T]){
     def asScala: Future[T] = {
       val p = Promise[T]()
-      underlying.addListener(new OperationCompletionListener{
+      lazy val listener: OperationCompletionListener = new OperationCompletionListener{
         def onComplete(f: OperationFuture[_]) {
+          underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if(status.isSuccess)
             p success underlying.get
           else
             p failure CBException(status.getMessage)
         }
-      })
+      }
+      underlying.addListener(listener)
       p.future
     }
   }
@@ -36,15 +38,17 @@ object CbFutureAsScala{
   implicit class RichGetFuture[T](underlying: GetFuture[T]){
     def asScala: Future[T] = {
       val p = Promise[T]()
-      underlying.addListener(new GetCompletionListener{
+      lazy val listener: GetCompletionListener = new GetCompletionListener{
         def onComplete(f: GetFuture[_]) {
+          underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if(status.isSuccess)
             p success underlying.get
           else
             p failure CBException(status.getMessage)
         }
-      })
+      }
+      underlying.addListener(listener)
       p.future
     }
   }
@@ -55,15 +59,17 @@ object CbFutureAsScala{
   implicit class RichHttpFuture[T](underlying: HttpFuture[T]){
     def asScala: Future[T] = {
       val p = Promise[T]()
-      underlying.addListener(new HttpCompletionListener{
+      lazy val listener: HttpCompletionListener = new HttpCompletionListener{
         def onComplete(f: HttpFuture[_]) {
+          underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if(status.isSuccess)
             p success underlying.get
           else
             p failure CBException(status.getMessage)
         }
-      })
+      }
+      underlying.addListener(listener)
       p.future
     }
   }
