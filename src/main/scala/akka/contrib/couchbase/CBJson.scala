@@ -36,7 +36,7 @@ trait CBReads[T] extends WithCB{
    * @param key CB key
    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(NotFound) when key not found, or other CBException
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def get(key: String): Future[T] = cb.asyncGet(key).asScala map reads
 
@@ -46,7 +46,7 @@ trait CBReads[T] extends WithCB{
    * @return a Future of Seq of T (can be null depends on the implement of CBReads[T].reads)
    * @throws java.util.NoSuchElementException insteads of CBException(NotFound) when some keys not found
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def getBulkImpl(keys: Seq[String]): Future[Seq[T]] =
     cb.asyncGetBulk(keys.asJava).asScala.map{bulk =>
@@ -58,7 +58,7 @@ trait CBReads[T] extends WithCB{
    * @param keys a Seq of CB keys
    * @return a Future of Seq of Option[T]
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def getBulkOptionImpl(keys: Seq[String]): Future[Seq[Option[T]]] =
     cb.asyncGetBulk(keys.asJava).asScala.map{bulk =>
@@ -148,7 +148,7 @@ trait ReadsKey1[T, A] extends HasKey1[A] with CBReads[T]{
    * @param a be used to generate CB key
    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(NotFound) when key not found, or other CBException
-   * @see [[akka.contrib.couchbase.HasKey1#key(A)]]
+   * @see [[akka.contrib.couchbase.HasKey1#key]]
    */
   final def get(a: A): Future[T] = super.get(key(a))
 
@@ -158,8 +158,8 @@ trait ReadsKey1[T, A] extends HasKey1[A] with CBReads[T]{
    * @return a Future of Seq of T (can be null depends on the implement of CBReads[T].reads)
    * @throws java.util.NoSuchElementException insteads of CBException(NotFound) when some keys not found
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey1#key(A)]]
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.HasKey1#key]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def getBulk(l: Seq[A]): Future[Seq[T]] = getBulkImpl(l map key)
 
@@ -168,8 +168,8 @@ trait ReadsKey1[T, A] extends HasKey1[A] with CBReads[T]{
    * @param l a Seq of type A, will be used to generate a Seq of CB keys
    * @return a Future of Seq of Option[T]
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey1#key(A)]]
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.HasKey1#key]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def getBulkOption(l: Seq[A]): Future[Seq[Option[T]]] = getBulkOptionImpl(l map key)
 }
@@ -185,7 +185,7 @@ trait WritesKey1[T, A] extends HasKey1[A] with CBWrites[T]{
    * @param a be used to generate CB key
    * @return a Future of java.lang.Boolean
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey1#key(A)]]
+   * @see [[akka.contrib.couchbase.HasKey1#key]]
    */
   final def delete(a: A) = cb.delete(key(a)).asScala
 
@@ -194,7 +194,7 @@ trait WritesKey1[T, A] extends HasKey1[A] with CBWrites[T]{
    * @param a be used to generate CB key
    * @return a Future of java.lang.Boolean
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey1#key(A)]]
+   * @see [[akka.contrib.couchbase.HasKey1#key]]
    */
   final def set(a: A, value: T) = super.set(key(a), value)
 
@@ -204,7 +204,7 @@ trait WritesKey1[T, A] extends HasKey1[A] with CBWrites[T]{
    * @param values a Seq of data to store to CB. `l` and `values` is mapped 1-1
    * @return a Future
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey1#key(A)]]
+   * @see [[akka.contrib.couchbase.HasKey1#key]]
    */
   final def setBulk(l: Seq[A], values: Seq[T]) = setBulkImpl(l map key, values)
 }
@@ -240,7 +240,7 @@ trait ReadsKey2[T, A, B] extends HasKey2[A, B] with CBReads[T]{
    * @param b be used to generate CB key
    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(NotFound) when key not found, or other CBException
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
    */
   final def get(a: A, b: B): Future[T] = super.get(key(a, b))
 
@@ -251,8 +251,8 @@ trait ReadsKey2[T, A, B] extends HasKey2[A, B] with CBReads[T]{
    * @return a Future of Seq of T (can be null depends on the implement of CBReads[T].reads)
    * @throws java.util.NoSuchElementException insteads of CBException(NotFound) when some keys not found
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def getBulk(l: Seq[A], b: B): Future[Seq[T]] = getBulkImpl(l.map(key(_, b)))
 
@@ -262,8 +262,8 @@ trait ReadsKey2[T, A, B] extends HasKey2[A, B] with CBReads[T]{
    * @param b a value of type B, will be used with seq `l` to generate a Seq of CB keys
    * @return a Future of Seq of Option[T]
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
-   * @see [[akka.contrib.couchbase.CBReads#reads(java.lang.Object)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
+   * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def getBulkOption(l: Seq[A], b: B): Future[Seq[Option[T]]] = getBulkOptionImpl(l.map(key(_, b)))
 }
@@ -281,7 +281,7 @@ trait WritesKey2[T, A, B] extends HasKey2[A, B] with CBWrites[T]{
    * @param b be used to generate CB key
    * @return a Future of java.lang.Boolean
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
    */
   final def delete(a: A, b: B) = cb.delete(key(a, b)).asScala
 
@@ -291,7 +291,7 @@ trait WritesKey2[T, A, B] extends HasKey2[A, B] with CBWrites[T]{
    * @param b be used to generate CB key
    * @return a Future of java.lang.Boolean
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
    */
   final def set(a: A, b: B, value: T) = super.set(key(a, b), value)
 
@@ -302,7 +302,7 @@ trait WritesKey2[T, A, B] extends HasKey2[A, B] with CBWrites[T]{
    * @param values a Seq of data to store to CB. `l` and `values` is mapped 1-1
    * @return a Future
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
    */
   final def setBulk(l: Seq[A], b: B, values: Seq[T]) = setBulkImpl(l.map(key(_, b)), values)
 }
@@ -322,7 +322,7 @@ trait Key2[T, A, B] extends ReadsKey2[T, A, B] with WritesKey2[T, A, B] {
    *          This function `f` is used to transform the gotten Option[T] to a value (of type T) to set to CB
    * @return a Future
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
-   * @see [[akka.contrib.couchbase.HasKey2#key(A, B)]]
+   * @see [[akka.contrib.couchbase.HasKey2#key]]
    */
   final def changeBulk(l: Seq[A], b: B)(f: Option[T] => T) = getBulkOption(l, b).
     flatMap{optionList =>
