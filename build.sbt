@@ -19,7 +19,7 @@ resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/
 
 libraryDependencies ++= Seq(
     "org.specs2"                %% "specs2"             % "2.3.7"   % "test",
-    "com.typesafe.play"         %% "play-json"          % "2.2.1"   ,//% "optional",
+    "com.typesafe.play"         %% "play-json"          % "2.2.1"   % "optional",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.3",
     "com.couchbase.client"      %  "couchbase-client"   % "1.3.2"
 )
