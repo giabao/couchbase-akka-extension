@@ -62,6 +62,9 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v2.1.2
++ update play 2.2.2 & akka 2.2.4
+
 ##### v2.1.0
 + Add scala doc for CBJson.scala
 + Remove handler when future completed in [CbFutureAsScala](https://github.com/giabao/couchbase-akka-extension/blob/master/src/main/scala/akka/contrib/couchbase/CbFutureAsScala.scala)
