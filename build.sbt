@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "2.1.2"
+version := "2.1.3"
 
 scalaVersion := "2.10.3"
 
@@ -18,7 +18,7 @@ javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "
 resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(
-    "org.specs2"                %% "specs2"             % "2.3.8"   % "test",
+    "org.specs2"                %% "specs2"             % "2.3.10"  % "test",
     "com.typesafe.play"         %% "play-json"          % "2.2.2"   % "optional",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.4",
     "com.couchbase.client"      %  "couchbase-client"   % "1.3.2"

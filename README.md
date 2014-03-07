@@ -9,6 +9,10 @@ This is an [akka extension](http://doc.akka.io/docs/akka/2.2.1/scala/extending-a
     extensions = ["akka.contrib.couchbase.CBExtension"]
     contrib.couchbase.buckets = [
       { bucket=bk1
+        # You can map bk1 to a different `real` bucket name in couchbase.
+        # If cb-bucket setting is missing then CBExtension will use `bucket` (here is bk1).
+        # One use-case of this setting is to support switching deploy environment without changeing any line of code
+        cb-bucket="bk1_test"
         password="some password"
         nodes="http://cb1.sandinh.com:8091/pools;http://cb2.sandinh.com:8091/pools"
       },
@@ -61,6 +65,9 @@ If you use sbt then:
 We use [Semantic Versioning](http://semver.org), so changing in micro version is binary compatible.
 
 Ex, v2.0.x is binary compatible with v2.0.0
+
+##### v2.1.3
++ support `cb-bucket` setting. This version is backward compatible with 2.1.x
 
 ##### v2.1.2
 + update play 2.2.2 & akka 2.2.4
