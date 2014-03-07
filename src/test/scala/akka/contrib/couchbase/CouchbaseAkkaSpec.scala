@@ -6,23 +6,16 @@
 package akka.contrib.couchbase
 
 import org.specs2.mutable.Specification
-import akka.actor.ActorSystem
-import com.couchbase.client.CouchbaseClient
 import CbFutureAsScala._
 import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
 
-class CouchbaseAkkaSpec extends Specification{sequential
-  var system: ActorSystem = _
-  var cb: CouchbaseClient = _
-
+class CouchbaseAkkaSpec extends Specification with CBHelper {sequential
   val k = "test_key"
 
   "CouchbaseAkka" should {
     "connect to CB on start" in {
-      system = ActorSystem()
       CBExtension(system).buckets.size must be_>(0)
-      cb = CBExtension(system).buckets.head._2
       val v = "test_value"
       cb.set(k, 10, v).get
       cb.get(k) === v
@@ -63,12 +56,6 @@ class CouchbaseAkkaSpec extends Specification{sequential
       cb.delete(k).asScala must beEqualTo(true).await
     }
 
-    "disconnect when ActorSystem is terminated" in {
-      system.shutdown()
-      system.awaitTermination()
-
-      system.isTerminated === true
-      cb.get(k) should throwAn[IllegalStateException]
-    }
+    assertTerminate()
   }
 }

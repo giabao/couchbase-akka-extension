@@ -1,15 +1,12 @@
 package akka.contrib.couchbase
 
 import org.specs2.mutable.Specification
-import akka.actor.ActorSystem
 import CbFutureAsScala._
 import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
 import scala.concurrent.Future
 
-class CbFutureAsScalaSpec extends Specification{sequential
-  lazy val system = ActorSystem()
-  lazy val cb = CBExtension(system).buckets.head._2
+class CbFutureAsScalaSpec extends Specification with CBHelper {sequential
   lazy val keys = Range(0, 1000).map("exist" + _)
 
   "RichBulkFuture" should {
@@ -32,11 +29,6 @@ class CbFutureAsScalaSpec extends Specification{sequential
       cb.asyncGetBulk(allKeys.asJavaCollection).asScala.map(_.size) must be_==(keys.size).await
     }
 
-    "shutdown ActorSystem" in {
-      system.shutdown()
-      system.awaitTermination()
-
-      system.isTerminated === true
-    }
+    assertTerminate()
   }
 }

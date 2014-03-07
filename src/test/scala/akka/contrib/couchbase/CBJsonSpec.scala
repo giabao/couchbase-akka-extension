@@ -6,18 +6,17 @@
 package akka.contrib.couchbase
 
 import play.api.libs.json.Json
-import akka.actor.ActorSystem
 import org.specs2.mutable.Specification
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import CbFutureAsScala._
 
-object CBJsonSpec {
-  lazy val system = ActorSystem()
+class CBJsonSpec extends Specification with CBHelper {sequential
+  import TrophyType._
 
   trait WithMyCB extends WithCB{
-    protected def cb = CBExtension(system).buckets.head._2
+    protected def cb = CBJsonSpec.this.cb
   }
 
   sealed trait TrophyType{
@@ -25,7 +24,6 @@ object CBJsonSpec {
     def name: String
     def bonus: Long
 
-    import TrophyType._
     final def luuDanh = this != TuTai
   }
 
@@ -58,10 +56,6 @@ object CBJsonSpec {
     protected def key(a: String) = s"test$a"
     protected def writes(v: Int) = v.toString
   }
-}
-
-class CBJsonSpec extends Specification{sequential
-  import CBJsonSpec._, TrophyType._
 
   "CBJson" should {
     "accessible with Key2" in {
@@ -105,11 +99,6 @@ ReadsKey1[T, A] { this: CBReads[T] =>
       WritesIntWithStringKey.set("a", 1) must not (throwA[Exception])
     }
 
-    "shutdown ActorSystem" in {
-      system.shutdown()
-      system.awaitTermination()
-
-      system.isTerminated === true
-    }
+    assertTerminate()
   }
 }
