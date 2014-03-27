@@ -4,14 +4,16 @@ This is an [akka extension](http://doc.akka.io/docs/akka/2.2.1/scala/extending-a
 
 ### Sample usage
 1. Add to application.conf
-```
+
+  ```
   akka{
     extensions = ["akka.contrib.couchbase.CBExtension"]
     contrib.couchbase.buckets = [
       { bucket=bk1
         # You can map bk1 to a different `real` bucket name in couchbase.
         # If cb-bucket setting is missing then CBExtension will use `bucket` (here is bk1).
-        # One use-case of this setting is to support switching deploy environment without changeing any line of code
+        # One use-case of this setting is to support switching
+        # deploy environment without changing any line of code
         cb-bucket="bk1_test"
         password="some password"
         nodes="http://cb1.sandinh.com:8091/pools;http://cb2.sandinh.com:8091/pools"
@@ -22,21 +24,24 @@ This is an [akka extension](http://doc.akka.io/docs/akka/2.2.1/scala/extending-a
       }
     ]
   }
-```
+  ```
+
 2. Get CouchbaseClient from an ActorSystem.
-This example use Play framework 2 - in which, we can get ActorSystem by importing.
-Of course, you can get CouchbaseClient without Play.
-```scala
+
+  This example use Play framework 2 - in which, we can get ActorSystem by importing.
+  Of course, you can get CouchbaseClient without Play.
+  ```scala
   import play.api.libs.concurrent.Akka
   import play.api.Play.current
   
   val cb = CBExtension(Akka.system).buckets("bk1")
-```
+  ```
+
 3. Use CouchbaseClient.
-If use asynchronous methods then we can use CbFutureAsScala
-to implicit convert spymemcache ListenableFuture to scala Future
-This code use play-json - a json parser library that do NOT depends on play framework
-```scala
+  If use asynchronous methods then we can use CbFutureAsScala
+  to implicit convert spymemcache ListenableFuture to scala Future
+  This code use play-json - a json parser library that do NOT depends on play framework
+  ```scala
   import akka.contrib.couchbase.CbFutureAsScala._
   import play.api.libs.json.Json
   import net.spy.memcached.ops.StatusCode.ERR_NOT_FOUND
@@ -54,7 +59,7 @@ This code use play-json - a json parser library that do NOT depends on play fram
         val u = User("Bob", 18)
         cb.set(key, Json.stringify(Json.toJson(u))).asScala.map(_ => u)
     }
-```
+  ```
 
 ### Install
 This library is published to [maven central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.sandinh%22%20AND%20a%3A%22couchbase-akka-extension_2.10%22).
@@ -72,11 +77,13 @@ Ex, v2.0.x is binary compatible with v2.0.0
  @see [SPY-153](http://www.couchbase.com/issues/browse/SPY-153)
   & the [corresponding commit](https://github.com/couchbase/spymemcached/commit/eb4c019f919370c9993d4a58d4990574b58d0f1e)
 
-+ Migration guide from v2.x:
+###### Migration guide from v2.x:
 In v2.x, you check whether the get operation return NotFound by matching
-```case CBException(NotFound)`` where NotFound is a string, hardcode = "Not found"
+```case CBException(NotFound)``` where NotFound is a string, hardcode = "Not found".
+
 Now, in v3.x, this checking must change to
 ```case CBException(ERR_NOT_FOUND)``` where ERR_NOT_FOUND is a value in enum net.spy.memcached.ops.StatusCode.
+
 Of course, you can check with other StatusCode.
 
 ##### v2.1.3
@@ -116,13 +123,13 @@ Of course, you can check with other StatusCode.
 + Add unit test
 + (NOT compatible) change from:
 ```scala
- implicit def xxCbFutureAsScala[T](underlying: XxCbFuture[T]): Future[T]
+implicit def xxCbFutureAsScala[T](underlying: XxCbFuture[T]): Future[T]
 ```
 to:
 ```scala
-  implicit class RichXxCbFuture(underlying: XxCbFuture[T]){
-    def asScala: Future[T]
-  }
+implicit class RichXxCbFuture(underlying: XxCbFuture[T]){
+  def asScala: Future[T]
+}
 ```
 So, in v2.0.0, you must call .asScala to convert CbFuture to scala Future (similar to collection.JavaConverters._ )
 
