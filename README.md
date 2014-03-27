@@ -39,6 +39,7 @@ This code use play-json - a json parser library that do NOT depends on play fram
 ```scala
   import akka.contrib.couchbase.CbFutureAsScala._
   import play.api.libs.json.Json
+  import net.spy.memcached.ops.StatusCode.ERR_NOT_FOUND
   import scala.concurrent.ExecutionContext.Implicits.global
 
   case class User(name: String, age: Int)
@@ -49,7 +50,7 @@ This code use play-json - a json parser library that do NOT depends on play fram
     cb.asyncGet(key).asScala.map{
       case s: String => Json.fromJson[User](Json.parse(s)).get
     }.recoverWith{
-      case CBException(NotFound) =>
+      case CBException(ERR_NOT_FOUND) =>
         val u = User("Bob", 18)
         cb.set(key, Json.stringify(Json.toJson(u))).asScala.map(_ => u)
     }
@@ -59,12 +60,24 @@ This code use play-json - a json parser library that do NOT depends on play fram
 This library is published to [maven central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.sandinh%22%20AND%20a%3A%22couchbase-akka-extension_2.10%22).
 
 If you use sbt then:
-```libraryDependencies += "com.sandinh" %% "couchbase-akka-extension" % "2.1.0"```
+```libraryDependencies += "com.sandinh" %% "couchbase-akka-extension" % "3.0.0"```
 
 ### Changelogs
 We use [Semantic Versioning](http://semver.org), so changing in micro version is binary compatible.
 
 Ex, v2.0.x is binary compatible with v2.0.0
+
+##### v3.0.0
++ Only change structure of CBException to use StatusCode type-safe feature in spymemcached 2.10.6.
+ @see [SPY-153](http://www.couchbase.com/issues/browse/SPY-153)
+  & the [corresponding commit](https://github.com/couchbase/spymemcached/commit/eb4c019f919370c9993d4a58d4990574b58d0f1e)
+
++ Migration guide from v2.x:
+In v2.x, you check whether the get operation return NotFound by matching
+```case CBException(NotFound)`` where NotFound is a string, hardcode = "Not found"
+Now, in v3.x, this checking must change to
+```case CBException(ERR_NOT_FOUND)``` where ERR_NOT_FOUND is a value in enum net.spy.memcached.ops.StatusCode.
+Of course, you can check with other StatusCode.
 
 ##### v2.1.3
 + support `cb-bucket` setting. This version is backward compatible with 2.1.x

@@ -35,7 +35,7 @@ trait CBReads[T] extends WithCB{
    * Get the document
    * @param key CB key
    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
-   * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(NotFound) when key not found, or other CBException
+   * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(ERR_NOT_FOUND) when key not found, or other CBException
    * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
   final def get(key: String): Future[T] = cb.asyncGet(key).asScala map reads
@@ -44,7 +44,7 @@ trait CBReads[T] extends WithCB{
    * Bulk get documents
    * @param keys a Seq of CB keys
    * @return a Future of Seq of T (can be null depends on the implement of CBReads[T].reads)
-   * @throws java.util.NoSuchElementException insteads of CBException(NotFound) when some keys not found
+   * @throws java.util.NoSuchElementException insteads of CBException(ERR_NOT_FOUND) when some keys not found
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
    * @see [[akka.contrib.couchbase.CBReads#reads]]
    */
@@ -147,7 +147,7 @@ trait ReadsKey1[T, A] extends HasKey1[A] with CBReads[T]{
    * Get the document has key generated from param a
    * @param a be used to generate CB key
    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
-   * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(NotFound) when key not found, or other CBException
+   * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(ERR_NOT_FOUND) when key not found, or other CBException
    * @see [[akka.contrib.couchbase.HasKey1#key]]
    */
   final def get(a: A): Future[T] = super.get(key(a))
@@ -156,7 +156,7 @@ trait ReadsKey1[T, A] extends HasKey1[A] with CBReads[T]{
    * Bulk get documents
    * @param l a Seq of type A, will be used to generate a Seq of CB keys
    * @return a Future of Seq of T (can be null depends on the implement of CBReads[T].reads)
-   * @throws java.util.NoSuchElementException insteads of CBException(NotFound) when some keys not found
+   * @throws java.util.NoSuchElementException insteads of CBException(ERR_NOT_FOUND) when some keys not found
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
    * @see [[akka.contrib.couchbase.HasKey1#key]]
    * @see [[akka.contrib.couchbase.CBReads#reads]]
@@ -239,7 +239,7 @@ trait ReadsKey2[T, A, B] extends HasKey2[A, B] with CBReads[T]{
    * @param a be used to generate CB key
    * @param b be used to generate CB key
    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
-   * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(NotFound) when key not found, or other CBException
+   * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(ERR_NOT_FOUND) when key not found, or other CBException
    * @see [[akka.contrib.couchbase.HasKey2#key]]
    */
   final def get(a: A, b: B): Future[T] = super.get(key(a, b))
@@ -249,7 +249,7 @@ trait ReadsKey2[T, A, B] extends HasKey2[A, B] with CBReads[T]{
    * @param l a Seq of type A, will be used to generate a Seq of CB keys
    * @param b a value of type B, will be used with seq `l` to generate a Seq of CB keys
    * @return a Future of Seq of T (can be null depends on the implement of CBReads[T].reads)
-   * @throws java.util.NoSuchElementException insteads of CBException(NotFound) when some keys not found
+   * @throws java.util.NoSuchElementException insteads of CBException(ERR_NOT_FOUND) when some keys not found
    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
    * @see [[akka.contrib.couchbase.HasKey2#key]]
    * @see [[akka.contrib.couchbase.CBReads#reads]]

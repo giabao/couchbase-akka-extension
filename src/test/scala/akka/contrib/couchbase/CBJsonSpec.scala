@@ -11,6 +11,7 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Await
 import scala.concurrent.duration._
 import CbFutureAsScala._
+import net.spy.memcached.ops.StatusCode.ERR_NOT_FOUND
 
 class CBJsonSpec extends Specification with CBHelper {sequential
   import TrophyType._
@@ -69,7 +70,9 @@ class CBJsonSpec extends Specification with CBHelper {sequential
 
       Trophy.delete(1, CuNhan).map(_.booleanValue) must beTrue.await
 
-      Trophy.get(1, CuNhan) must throwA(CBException(NotFound)).await
+      Trophy.get(1, CuNhan) must throwA[CBException].like{
+        case CBException(ERR_NOT_FOUND) => ok
+      }.await
     }
 
     /* The following code will throw StackOverflowError at line C.set("x")

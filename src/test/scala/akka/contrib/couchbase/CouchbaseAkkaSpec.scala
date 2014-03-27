@@ -9,6 +9,7 @@ import org.specs2.mutable.Specification
 import CbFutureAsScala._
 import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
+import net.spy.memcached.ops.StatusCode.ERR_NOT_FOUND
 
 class CouchbaseAkkaSpec extends Specification with CBHelper {sequential
   val k = "test_key"
@@ -39,14 +40,15 @@ class CouchbaseAkkaSpec extends Specification with CBHelper {sequential
       cb.asyncGetBulk(keys.asJava).asScala must havePair(k2 -> v2.asInstanceOf[AnyRef]).await
     }
 
-    "throw CBException(NotFound)" in {
+    "throw CBException(ERR_NOT_FOUND)" in {
       val k = "test_key_not_exist"
-      cb.asyncGet(k).asScala must throwA(CBException(NotFound)).await
+      cb.asyncGet(k).asScala must throwA[CBException].like{
+        case CBException(ERR_NOT_FOUND) => ok
+      }.await
+
       cb.asyncGet(k).asScala.recover{
-        case CBException(NotFound) => throw new CBException("foo")
-      }.recover{
-        case CBException("bar") => "success"
-      } must throwA(CBException("foo")).await
+        case CBException(ERR_NOT_FOUND) => throw new Exception("foo")
+      } must throwA[Exception]("foo").await
 
       val v = "Bob"
 

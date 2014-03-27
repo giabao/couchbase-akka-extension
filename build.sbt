@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "2.1.4"
+version := "3.0.0"
 
 scalaVersion := "2.10.4"
 
