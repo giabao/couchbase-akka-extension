@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "2.1.3"
+version := "2.1.4"
 
 scalaVersion := "2.10.4"
 
@@ -31,13 +31,7 @@ libraryDependencies ++= Seq(
     "com.couchbase.client"      %  "couchbase-client"   % "1.3.2"
 )
 
-publishTo <<= version { v =>
-  val nexus = "https://oss.sonatype.org/"
-  if (v.trim.endsWith("SNAPSHOT"))
-    Some("snapshots" at nexus + "content/repositories/snapshots")
-  else
-    Some("releases"  at nexus + "service/local/staging/deploy/maven2")
-}
+xerial.sbt.Sonatype.sonatypeSettings
 
 publishMavenStyle := true
 
