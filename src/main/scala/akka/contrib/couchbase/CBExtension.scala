@@ -7,7 +7,7 @@ import java.net.URI
 import collection.JavaConverters._
 import scala.util.Try
 
-class CBExtension(system: ExtendedActorSystem) extends Extension{
+class CBExtension(system: ExtendedActorSystem) extends Extension {
   /** Map from bucket name to CouchbaseClient
     * format of each bucket in config is similar to CouchbaseConnectionFactory */
   val buckets: Map[String, CouchbaseClient] = system.settings.config.
@@ -16,7 +16,7 @@ class CBExtension(system: ExtendedActorSystem) extends Extension{
   private def bucketEntry(cfg: Config) = {
     val bucket = cfg.getString("bucket")
     val password = cfg.getString("password")
-    val cbBucket = Try{cfg.getString("cb-bucket")}.getOrElse(bucket)
+    val cbBucket = Try { cfg.getString("cb-bucket") }.getOrElse(bucket)
     //We need call toBuffer, not toList because if call toList =>
     //baseList will be scala.collection.convert.Wrappers.SeqWrapper =>
     //  java.lang.UnsupportedOperationException
@@ -29,7 +29,7 @@ class CBExtension(system: ExtendedActorSystem) extends Extension{
     (bucket, cb)
   }
 
-  system.registerOnTermination{
+  system.registerOnTermination {
     buckets.foreach(_._2.shutdown())
   }
 }

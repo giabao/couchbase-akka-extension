@@ -8,23 +8,23 @@ import net.spy.memcached.ops.{StatusCode, OperationStatus}
 
 /** implicit convert [T extends net.spy.memcached.internal.ListenableFuture] to scala Future
   * @see http://stackoverflow.com/questions/11529145/how-do-i-wrap-a-java-util-concurrent-future-in-an-akka-future?rq=1
-  *      http://stackoverflow.com/questions/17215421/scala-concurrent-future-wrapper-for-java-util-concurrent-future
-  *      http://www.couchbase.com/issues/browse/JCBC-343#comment-68524 */
-object CbFutureAsScala{
+  * http://stackoverflow.com/questions/17215421/scala-concurrent-future-wrapper-for-java-util-concurrent-future
+  * http://www.couchbase.com/issues/browse/JCBC-343#comment-68524 */
+object CbFutureAsScala {
   class CBException private (val status: StatusCode, msg: String) extends Exception(msg)
-  object CBException{
+  object CBException {
     private[CbFutureAsScala] def apply(status: OperationStatus) = new CBException(status.getStatusCode, status.getMessage)
-    def unapply(e: CBException): Option[StatusCode] = if(e eq null) None else Some(e.status)
+    def unapply(e: CBException): Option[StatusCode] = if (e eq null) None else Some(e.status)
   }
 
-  implicit class RichOperationFuture[T](underlying: OperationFuture[T]){
+  implicit class RichOperationFuture[T](underlying: OperationFuture[T]) {
     def asScala: Future[T] = {
       val p = Promise[T]()
-      lazy val listener: OperationCompletionListener = new OperationCompletionListener{
+      lazy val listener: OperationCompletionListener = new OperationCompletionListener {
         def onComplete(f: OperationFuture[_]) {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
-          if(status.isSuccess)
+          if (status.isSuccess)
             p success underlying.get
           else
             p failure CBException(status)
@@ -35,14 +35,14 @@ object CbFutureAsScala{
     }
   }
 
-  implicit class RichGetFuture[T](underlying: GetFuture[T]){
+  implicit class RichGetFuture[T](underlying: GetFuture[T]) {
     def asScala: Future[T] = {
       val p = Promise[T]()
-      lazy val listener: GetCompletionListener = new GetCompletionListener{
+      lazy val listener: GetCompletionListener = new GetCompletionListener {
         def onComplete(f: GetFuture[_]) {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
-          if(status.isSuccess)
+          if (status.isSuccess)
             p success underlying.get
           else
             p failure CBException(status)
@@ -53,17 +53,15 @@ object CbFutureAsScala{
     }
   }
 
-  /**
-   * @note we don't need implicit converter from ViewFuture. Use HttpFuture[ViewResponse] instead
-   */
-  implicit class RichHttpFuture[T](underlying: HttpFuture[T]){
+  /** @note we don't need implicit converter from ViewFuture. Use HttpFuture[ViewResponse] instead */
+  implicit class RichHttpFuture[T](underlying: HttpFuture[T]) {
     def asScala: Future[T] = {
       val p = Promise[T]()
-      lazy val listener: HttpCompletionListener = new HttpCompletionListener{
+      lazy val listener: HttpCompletionListener = new HttpCompletionListener {
         def onComplete(f: HttpFuture[_]) {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
-          if(status.isSuccess)
+          if (status.isSuccess)
             p success underlying.get
           else
             p failure CBException(status)
@@ -74,14 +72,14 @@ object CbFutureAsScala{
     }
   }
 
-  implicit class RichBulkFuture[T](underlying: BulkFuture[java.util.Map[String, T]]){
+  implicit class RichBulkFuture[T](underlying: BulkFuture[java.util.Map[String, T]]) {
     def asScala: Future[Map[String, T]] = {
       val p = Promise[Map[String, T]]()
-      lazy val listener: BulkGetCompletionListener = new BulkGetCompletionListener{
+      lazy val listener: BulkGetCompletionListener = new BulkGetCompletionListener {
         def onComplete(f: BulkGetFuture[_]) {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
-          if(status.isSuccess)
+          if (status.isSuccess)
             p success underlying.get.asScala.toMap //java.util.Map -> mutable.Map -> immutable.Map
           else
             p failure CBException(status)
@@ -92,5 +90,5 @@ object CbFutureAsScala{
     }
   }
 
-//  implicit class RichReplicaGetFuture[T](underlying: ReplicaGetFuture[T]){ ??? } //we don't need now
+  //  implicit class RichReplicaGetFuture[T](underlying: ReplicaGetFuture[T]){ ??? } //we don't need now
 }

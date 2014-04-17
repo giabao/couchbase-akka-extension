@@ -6,7 +6,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
 import scala.concurrent.Future
 
-class CbFutureAsScalaSpec extends Specification with CBHelper {sequential
+class CbFutureAsScalaSpec extends Specification with CBHelper {
+  sequential
+
   lazy val keys = Range(0, 1000).map("exist" + _)
 
   "RichBulkFuture" should {
@@ -19,7 +21,7 @@ class CbFutureAsScalaSpec extends Specification with CBHelper {sequential
     }
 
     "asyncGetBulk all non-exist documents successfully" in {
-      cb.asyncGetBulk("not_exist1", "not_exist2").asScala.map{m =>
+      cb.asyncGetBulk("not_exist1", "not_exist2").asScala.map { m =>
         m.size
       } must be_==(0).await
     }

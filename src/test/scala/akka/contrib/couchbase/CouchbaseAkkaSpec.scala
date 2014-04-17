@@ -1,8 +1,6 @@
-/**
- * @author giabao
- * created: 2013-10-07 17:45
- * (c) 2011-2013 sandinh.com
- */
+/** @author giabao
+  * created: 2013-10-07 17:45
+  * (c) 2011-2013 sandinh.com */
 package akka.contrib.couchbase
 
 import org.specs2.mutable.Specification
@@ -11,7 +9,9 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
 import net.spy.memcached.ops.StatusCode.ERR_NOT_FOUND
 
-class CouchbaseAkkaSpec extends Specification with CBHelper {sequential
+class CouchbaseAkkaSpec extends Specification with CBHelper {
+  sequential
+
   val k = "test_key"
 
   "CouchbaseAkka" should {
@@ -42,11 +42,11 @@ class CouchbaseAkkaSpec extends Specification with CBHelper {sequential
 
     "throw CBException(ERR_NOT_FOUND)" in {
       val k = "test_key_not_exist"
-      cb.asyncGet(k).asScala must throwA[CBException].like{
+      cb.asyncGet(k).asScala must throwA[CBException].like {
         case CBException(ERR_NOT_FOUND) => ok
       }.await
 
-      cb.asyncGet(k).asScala.recover{
+      cb.asyncGet(k).asScala.recover {
         case CBException(ERR_NOT_FOUND) => throw new Exception("foo")
       } must throwA[Exception]("foo").await
 

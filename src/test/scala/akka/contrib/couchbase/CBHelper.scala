@@ -8,10 +8,10 @@ trait CBHelper { this: Specification =>
   lazy val cb = CBExtension(system).buckets("bk1")
 
   def assertTerminate() = "disconnect when ActorSystem is terminated" in {
-      system.shutdown()
-      system.awaitTermination()
+    system.shutdown()
+    system.awaitTermination()
 
-      system.isTerminated === true
-      cb.get("test_key") should throwAn[IllegalStateException]
-    }
+    system.isTerminated === true
+    cb.get("test_key") should throwAn[IllegalStateException]
+  }
 }
