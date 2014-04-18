@@ -27,6 +27,5 @@ libraryDependencies ++= Seq(
     "org.specs2"                %% "specs2"             % "2.3.10"  % "test",
     "com.typesafe.play"         %% "play-json"          % "2.2.2"   % "optional",
     "com.typesafe.akka"         %% "akka-actor"         % "2.2.4",
-    "net.spy"                   %  "spymemcached"       % "2.10.6",
-    "com.couchbase.client"      %  "couchbase-client"   % "1.3.2"
+    "com.couchbase.client"      %  "couchbase-client"   % "1.4.0"
 )
