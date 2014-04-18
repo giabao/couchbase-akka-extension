@@ -72,6 +72,10 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v3.0.1
++ update couchbase-client 1.4.0 & spymemcached 2.11.1
++ update sbt 0.13.2
+
 ##### v3.0.0
 + Only change structure of CBException to use StatusCode type-safe feature in spymemcached 2.10.6.
  @see [SPY-153](http://www.couchbase.com/issues/browse/SPY-153)

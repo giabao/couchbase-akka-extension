@@ -2,7 +2,7 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "3.0.0"
+version := "3.0.1"
 
 scalaVersion := "2.10.4"
 
@@ -14,7 +14,7 @@ crossScalaVersions := Seq(
 //see https://github.com/scala/scala/blob/2.10.x/src/compiler/scala/tools/nsc/settings/ScalaSettings.scala
 scalacOptions ++= Seq(
   "-encoding", "UTF-8", "-deprecation", "-unchecked", "-feature", //"-optimise",
-  "-Xmigration", //"–Xverify", "-Xcheck-null", "-Ystatistics",
+  "-Xmigration", "-Xfuture", //"–Xverify", "-Xcheck-null", "-Ystatistics",
   "-Yinline-warnings", //"-Yinline",
   "-Ywarn-dead-code", "-Ydead-code"
 )
