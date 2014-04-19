@@ -8,6 +8,8 @@ import CbFutureAsScala._
 import scala.concurrent.ExecutionContext.Implicits.global
 import collection.JavaConverters._
 import net.spy.memcached.ops.StatusCode.ERR_NOT_FOUND
+import scala.concurrent.Await
+import scala.concurrent.duration._
 
 class CouchbaseAkkaSpec extends Specification with CBHelper {
   sequential
@@ -42,13 +44,16 @@ class CouchbaseAkkaSpec extends Specification with CBHelper {
 
     "throw CBException(ERR_NOT_FOUND)" in {
       val k = "test_key_not_exist"
-      cb.asyncGet(k).asScala must throwA[CBException].like {
+      val atMost = Duration(1, SECONDS)
+      Await.result(cb.asyncGet(k).asScala, atMost) must throwA[CBException].like {
         case CBException(ERR_NOT_FOUND) => ok
-      }.await
+      }
 
-      cb.asyncGet(k).asScala.recover {
+      val future = cb.asyncGet(k).asScala.recover {
         case CBException(ERR_NOT_FOUND) => throw new Exception("foo")
-      } must throwA[Exception]("foo").await
+      }
+
+      Await.result(future, atMost) must throwA[Exception]("foo")
 
       val v = "Bob"
 

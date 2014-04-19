@@ -63,15 +63,16 @@ class CBJsonSpec extends Specification with CBHelper {
 
       val uids = Seq(1, 2, 3)
       val trophies = Seq(Trophy(5), Trophy(6), Trophy(7))
-      Await.result(Trophy.setBulk(uids, CuNhan, trophies), Duration(2, SECONDS)) must have size uids.size
+      val atMost = Duration(1, SECONDS)
+      Await.result(Trophy.setBulk(uids, CuNhan, trophies), atMost) must have size uids.size
 
       Trophy.get(1, CuNhan).map(_.awardCount) must beEqualTo(5).await
 
       Trophy.delete(1, CuNhan).map(_.booleanValue) must beTrue.await
 
-      Trophy.get(1, CuNhan) must throwA[CBException].like {
+      Await.result(Trophy.get(1, CuNhan), atMost) must throwA[CBException].like {
         case CBException(ERR_NOT_FOUND) => ok
-      }.await
+      }
     }
 
     /* The following code will throw StackOverflowError at line C.set("x")
