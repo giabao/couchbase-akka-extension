@@ -72,6 +72,9 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v3.1.1
++ update couchbase-client 1.4.1. version 1.4.0 of couchbase-client depends on spymemcached 2.11.1 which has some critical bugs.
+
 ##### v3.1.0
 + Change nothing in code but update play-json (optional dependency) to 2.3.0-RC1 & akka-actor 2.3.2
 + cross compile for scala 2.11 & scala 2.10
