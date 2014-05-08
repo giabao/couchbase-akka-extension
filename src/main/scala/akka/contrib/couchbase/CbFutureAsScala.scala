@@ -21,7 +21,7 @@ object CbFutureAsScala {
     def asScala: Future[T] = {
       val p = Promise[T]()
       lazy val listener: OperationCompletionListener = new OperationCompletionListener {
-        def onComplete(f: OperationFuture[_]) {
+        def onComplete(f: OperationFuture[_]): Unit = {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if (status.isSuccess)
@@ -39,7 +39,7 @@ object CbFutureAsScala {
     def asScala: Future[T] = {
       val p = Promise[T]()
       lazy val listener: GetCompletionListener = new GetCompletionListener {
-        def onComplete(f: GetFuture[_]) {
+        def onComplete(f: GetFuture[_]): Unit = {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if (status.isSuccess)
@@ -58,7 +58,7 @@ object CbFutureAsScala {
     def asScala: Future[T] = {
       val p = Promise[T]()
       lazy val listener: HttpCompletionListener = new HttpCompletionListener {
-        def onComplete(f: HttpFuture[_]) {
+        def onComplete(f: HttpFuture[_]): Unit = {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if (status.isSuccess)
@@ -76,7 +76,7 @@ object CbFutureAsScala {
     def asScala: Future[Map[String, T]] = {
       val p = Promise[Map[String, T]]()
       lazy val listener: BulkGetCompletionListener = new BulkGetCompletionListener {
-        def onComplete(f: BulkGetFuture[_]) {
+        def onComplete(f: BulkGetFuture[_]): Unit = {
           underlying.removeListener(listener)
           val status = f.getStatus //f is underlying
           if (status.isSuccess)
