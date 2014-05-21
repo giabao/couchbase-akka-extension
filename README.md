@@ -65,12 +65,16 @@ This is an [akka extension](http://doc.akka.io/docs/akka/2.2.1/scala/extending-a
 This library is published to [maven central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.sandinh%22%20AND%20a%3A%22couchbase-akka-extension_2.10%22).
 
 If you use sbt then:
-```libraryDependencies += "com.sandinh" %% "couchbase-akka-extension" % "3.0.0"```
+```libraryDependencies += "com.sandinh" %% "couchbase-akka-extension" % "3.1.2"```
 
 ### Changelogs
 We use [Semantic Versioning](http://semver.org), so changing in micro version is binary compatible.
 
 Ex, v2.0.x is binary compatible with v2.0.0
+
+##### v3.1.2
++ update sbt 0.13.5-RC4, scala 2.11.1, akka 2.3.3 & specs2 2.3.12
++ add convenient traits akka.contrib.couchbase.{HasKey0, ReadsKey0, WritesKey0, Key0}
 
 ##### v3.1.1
 + update couchbase-client 1.4.1. version 1.4.0 of couchbase-client depends on spymemcached 2.11.1 which has some critical bugs.

@@ -98,6 +98,42 @@ trait CBJson[T] extends CBJsonReads[T] with CBJsonWrites[T] {
   protected implicit val fmt: Format[T]
 }
 
+/** This trait has a method key: String */
+trait HasKey0 {
+  /** @return CB key */
+  protected def key: String
+}
+
+/** This trait extends HasKey0 and contains some method to read CB documents
+  * @tparam T type of the data class that we want to read from CB */
+trait ReadsKey0[T] extends HasKey0 with CBReads[T] {
+  /** Get the document has the specified key
+    * @return a Future of T (when get success, the gotten value can be null depends on the implement of CBReads[T].reads)
+    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException CBException(ERR_NOT_FOUND) when key not found, or other CBException
+    * @see [[akka.contrib.couchbase.HasKey0#key]] */
+  final def get: Future[T] = super.get(key)
+}
+
+/** This trait extends HasKey0 and contains some method to write/ delete CB documents
+  * @tparam T type of the data class that we want to write to CB */
+trait WritesKey0[T] extends HasKey0 with CBWrites[T] {
+  /** Delete the document has the specified key
+    * @return a Future of java.lang.Boolean
+    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
+    * @see [[akka.contrib.couchbase.HasKey0#key]] */
+  final def delete() = cb.delete(key).asScala
+
+  /** Set the document has the specified key
+    * @return a Future of java.lang.Boolean
+    * @throws akka.contrib.couchbase.CbFutureAsScala.CBException when the underlying CouchbaseClient's method fail
+    * @see [[akka.contrib.couchbase.HasKey0#key]] */
+  final def set(value: T) = super.set(key, value)
+}
+
+/** This trait mix ReadsKey0 with WritesKey0
+  * @tparam T type of the data class that we want to read from and write to CB */
+trait Key0[T] extends ReadsKey0[T] with WritesKey0[T]
+
 /** This trait has a method to map a param of type A to a CB key */
 trait HasKey1[A] {
   /** Map a param of type A to a CB key

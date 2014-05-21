@@ -2,16 +2,15 @@ organization := "com.sandinh"
 
 name := "couchbase-akka-extension"
 
-version := "3.1.1"
+version := "3.1.2"
 
-scalaVersion := "2.11.0"
+scalaVersion := "2.11.1"
 
 crossScalaVersions := Seq(
-  "2.11.0",
+  "2.11.1",
   "2.10.4"
 )
 
-//see https://github.com/scala/scala/blob/2.10.x/src/compiler/scala/tools/nsc/settings/ScalaSettings.scala
 scalacOptions ++= Seq(
   "-encoding", "UTF-8", "-deprecation", "-unchecked", "-feature", //"-optimise",
   "-Xmigration", "-Xfuture", //"–Xverify", "-Xcheck-null", "-Ystatistics",
@@ -24,8 +23,8 @@ javacOptions ++= Seq("-encoding", "UTF-8", "-source", "1.7", "-target", "1.7", "
 resolvers += "Typesafe Releases" at "http://repo.typesafe.com/typesafe/releases/"
 
 libraryDependencies ++= Seq(
-    "org.specs2"                %% "specs2"             % "2.3.11"    % "test",
+    "org.specs2"                %% "specs2"             % "2.3.12"    % "test",
     "com.typesafe.play"         %% "play-json"          % "2.3.0-RC1" % "optional",
-    "com.typesafe.akka"         %% "akka-actor"         % "2.3.2",
+    "com.typesafe.akka"         %% "akka-actor"         % "2.3.3",
     "com.couchbase.client"      %  "couchbase-client"   % "1.4.1"
 )
