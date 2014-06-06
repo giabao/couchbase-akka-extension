@@ -72,6 +72,10 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v3.1.4
++ update play-json 2.3.0 (optional dependency)
++ update couchbase-client 1.4.2 (& spymemcached 2.11.3)
+
 ##### v3.1.3
 + update play-json 2.3.0-RC2 (optional dependency)
 
