@@ -72,6 +72,11 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v3.1.5
++ update play-json 2.3.1 (optional dependency), akka-actor 2.3.4
++ note: couchbase-client is NOT updated to 1.4.3 because when run ```sbt test``` with v1.4.3 => many warning lines:
+``` WARN net.spy.memcached.MemcachedConnection:  handling node for operation is not set```
+
 ##### v3.1.4
 + update play-json 2.3.0 (optional dependency)
 + update couchbase-client 1.4.2 (& spymemcached 2.11.3)
