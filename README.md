@@ -72,6 +72,9 @@ We use [Semantic Versioning](http://semver.org), so changing in micro version is
 
 Ex, v2.0.x is binary compatible with v2.0.0
 
+##### v3.1.6
++ update scala 2.11.2, specs2 2.4, play-json 2.3.2, couchbase-client 1.4.4
+
 ##### v3.1.5
 + update play-json 2.3.1 (optional dependency), akka-actor 2.3.4
 + note: couchbase-client is NOT updated to 1.4.3 because when run ```sbt test``` with v1.4.3 => many warning lines:
